@@ -17,8 +17,12 @@
 #define MIN_EQUACIONES 2
 #define FILA (MAX_EQUACIONES)
 #define COLUMNA (FILA) + 1
+#define limpiar_salto_linea() while (getchar() != '\n')
+#define error(x) printf("\n- ERROR -, %s\n\n", x)
 
 int numeroDeEcuaciones;
+void pausa(void);
+int validar_numero_entre(char texto[], int num_min, int num_max);
 void resultado(double matriz[FILA][COLUMNA]);
 void tamanioMatriz(double matriz[FILA][COLUMNA]);
 void mostrarFila(double x[FILA], int numeroDeEcuaciones);
@@ -35,58 +39,79 @@ int main(int argc, char** argv) {
     double matriz[FILA][COLUMNA];
     switch (argc) {
         case 1:
-        do {
-            printf("1 Matriz ingresada por teclado.\n"
-                    "2 Matriz ingresada por el archivo \"matrizAumentada.txt\"\n"
-                    "0 salir\n"
-                    "Ingrese un opción: ");
-            scanf("%d", &opcion);
-            switch (opcion) {
-                case 1:
+            do {
+                opcion = validar_numero_entre("1 Matriz ingresada por teclado.\n"
+                        "2 Matriz ingresada por el archivo \"matrizAumentada.txt\"\n"
+                        "0 salir\n", 0, 2);
+                switch (opcion) {
+                    case 1:
+                        puts("La matriz aumentada dada por el usuario.");
+                        tamanioMatriz(matriz);
+                        resultado(matriz);
+                        break;
+                    case 2:
+                        puts("La matriz aumentada tomada del archivo.");
+                        leerArchivo(matriz);
+                        resultado(matriz);
+                        break;
+                }
+            } while (opcion != 0);
+            break;
+        case 2:
+            switch (*argv[1]) {
+                case '1':
                     puts("La matriz aumentada dada por el usuario.");
                     tamanioMatriz(matriz);
                     resultado(matriz);
                     break;
-                case 2:
+                case '2':
                     puts("La matriz aumentada tomada del archivo.");
                     leerArchivo(matriz);
                     resultado(matriz);
                     break;
-                default:
-                    puts("- ERROR -\nIngrese una opción valida");
-                    break;
             }
-        } while (opcion != 0);
-        break;
-        case 2:
-        switch (*argv[1]) {
-            case '1':
-                puts("La matriz aumentada dada por el usuario.");
-                tamanioMatriz(matriz);
-                resultado(matriz);
-                break;
-            case '2':
-                puts("La matriz aumentada tomada del archivo.");
-                leerArchivo(matriz);
-                resultado(matriz);
-                break;
-            default:
-                puts("- ERROR -\nIngrese una opción valida");
-                break;
-        }
-        break;
+            break;
     }
     return (EXIT_SUCCESS);
+}
+
+void pausa(void) {
+    char i = '\0';
+    puts("Presione ENTER para continuar...");
+    scanf("%c", &i);
+    system("clear");
+}
+
+int validar_numero_entre(char texto[], int num_min, int num_max) {
+    int num, encontro;
+    printf("%s\nIngrese un opción: ", texto);
+    scanf("%d", &num);
+    do {
+        encontro = 0;
+        limpiar_salto_linea();
+        if (num < num_min || num > num_max) {
+            system("clear");
+            printf("%s", texto);
+            error("ingrese un número valida.");
+            printf("Ingrese un opción: ");
+            scanf("%d", &num);
+        } else {
+            encontro++;
+        }
+    } while (encontro != 1);
+    system("clear");
+    return num;
 }
 
 void resultado(double matriz[FILA][COLUMNA]) {
     double x[FILA];
     int opcion;
-
-    printf("1 Eliminacion de Gauss directo.\n"
-            "2 Eliminacion de Gauss simple.\n"
-            "Ingrese un opción: ");
-    scanf("%d", &opcion);
+    system("clear");
+    
+    mostrarMatriz(matriz, numeroDeEcuaciones);
+    
+    opcion = validar_numero_entre("1 Eliminacion de Gauss directo.\n"
+            "2 Eliminacion de Gauss simple.\n", 1, 2);
     switch (opcion) {
         case 1:
             mostrarMatriz(matriz, numeroDeEcuaciones);
@@ -104,11 +129,8 @@ void resultado(double matriz[FILA][COLUMNA]) {
             puts("resultado de las x");
             mostrarFila(x, numeroDeEcuaciones);
             break;
-        default:
-            puts("- ERROR -\nIngrese una opción valida");
-            break;
     }
-
+    pausa();
 }
 
 void tamanioMatriz(double matriz[FILA][COLUMNA]) {

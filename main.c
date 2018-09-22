@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #define MAX_EQUACIONES 100
 #define MIN_EQUACIONES 2
 #define FILA (MAX_EQUACIONES)
@@ -23,8 +24,10 @@
 int numeroDeEcuaciones;
 void pausa(void);
 int validar_numero_entre(char texto[], int num_min, int num_max);
+bool diagonalPrincipalNoEsCero (double matriz[FILA][COLUMNA], int numeroDeEcuaciones);
 void resultado(double matriz[FILA][COLUMNA]);
 void tamanioMatriz(double matriz[FILA][COLUMNA]);
+void ordenarMatrizDiagonal(double matriz[FILA][COLUMNA], int numeroDeEcuaciones);
 void mostrarFila(double x[FILA], int numeroDeEcuaciones);
 void mostrarMatriz(double matriz[FILA][COLUMNA], int numeroDeEcuaciones);
 void leerArchivo(double matriz[FILA][COLUMNA]);
@@ -109,6 +112,8 @@ void resultado(double matriz[FILA][COLUMNA]) {
     system("clear");
     
     mostrarMatriz(matriz, numeroDeEcuaciones);
+    ordenarMatrizDiagonal(matriz, numeroDeEcuaciones);
+    mostrarMatriz(matriz, numeroDeEcuaciones);
     
     opcion = validar_numero_entre("1 Eliminacion de Gauss directo.\n"
             "2 Eliminacion de Gauss simple.\n", 1, 2);
@@ -131,6 +136,37 @@ void resultado(double matriz[FILA][COLUMNA]) {
             break;
     }
     pausa();
+}
+
+void ordenarMatrizDiagonal(double matriz[FILA][COLUMNA], int numeroDeEcuaciones) {
+    int i, j, k, l;
+    int esCero = 0;
+    double aux[FILA] = {0};
+    do {
+        esCero = 0;
+        for (i = 0; i < numeroDeEcuaciones; i++) {
+            for (j = 0; j < numeroDeEcuaciones; j++) {
+                if (matriz[i][i] == 0) {
+                    for (k = 0; k < numeroDeEcuaciones + 1; k++) {
+                        aux[k] = matriz[i][k];
+                        matriz[i][k] = matriz[j][k];
+                        matriz[j][k] = aux[k];
+                    }
+                }
+            }
+        }
+    } while (diagonalPrincipalNoEsCero(matriz, numeroDeEcuaciones) == true);
+}
+
+bool diagonalPrincipalNoEsCero(double matriz[FILA][COLUMNA], int numeroDeEcuaciones) {
+    int i;
+    bool esCero = false;
+    for (i = 0; i < numeroDeEcuaciones; i++) {
+        if (matriz[i][i] == 0) {
+            esCero = true;
+        }
+    }
+    return esCero;
 }
 
 void tamanioMatriz(double matriz[FILA][COLUMNA]) {

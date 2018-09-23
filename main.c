@@ -24,7 +24,7 @@
 int numeroDeEcuaciones;
 void pausa(void);
 int validar_numero_entre(char texto[], int num_min, int num_max);
-bool diagonalPrincipalNoEsCero (double matriz[FILA][COLUMNA], int numeroDeEcuaciones);
+bool diagonalPrincipalNoEsCero(double matriz[FILA][COLUMNA], int numeroDeEcuaciones);
 void resultado(double matriz[FILA][COLUMNA]);
 void tamanioMatriz(double matriz[FILA][COLUMNA]);
 void ordenarMatrizDiagonal(double matriz[FILA][COLUMNA], int numeroDeEcuaciones);
@@ -110,11 +110,11 @@ void resultado(double matriz[FILA][COLUMNA]) {
     double x[FILA];
     int opcion;
     system("clear");
-    
+
     mostrarMatriz(matriz, numeroDeEcuaciones);
     ordenarMatrizDiagonal(matriz, numeroDeEcuaciones);
     mostrarMatriz(matriz, numeroDeEcuaciones);
-    
+
     opcion = validar_numero_entre("1 Eliminacion de Gauss directo.\n"
             "2 Eliminacion de Gauss simple.\n", 1, 2);
     switch (opcion) {

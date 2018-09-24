@@ -24,7 +24,7 @@
 int numeroDeEcuaciones;
 void pausa(void);
 int validar_numero_entre(char texto[], int num_min, int num_max);
-bool diagonalPrincipalNoEsCero(double matriz[FILA][COLUMNA], int numeroDeEcuaciones);
+bool esCeroMatrizDiagonal(double matriz[FILA][COLUMNA], int numeroDeEcuaciones);
 void resultado(double matriz[FILA][COLUMNA]);
 void tamanioMatriz(double matriz[FILA][COLUMNA]);
 void ordenarMatrizDiagonal(double matriz[FILA][COLUMNA], int numeroDeEcuaciones);
@@ -152,10 +152,10 @@ void ordenarMatrizDiagonal(double matriz[FILA][COLUMNA], int numeroDeEcuaciones)
                 }
             }
         }
-    } while (diagonalPrincipalNoEsCero(matriz, numeroDeEcuaciones) == true);
+    } while (esCeroMatrizDiagonal(matriz, numeroDeEcuaciones) == true);
 }
 
-bool diagonalPrincipalNoEsCero(double matriz[FILA][COLUMNA], int numeroDeEcuaciones) {
+bool esCeroMatrizDiagonal(double matriz[FILA][COLUMNA], int numeroDeEcuaciones) {
     int i;
     bool esCero = false;
     for (i = 0; i < numeroDeEcuaciones; i++) {

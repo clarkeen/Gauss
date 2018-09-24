@@ -43,17 +43,17 @@ int main(int argc, char** argv) {
     switch (argc) {
         case 1:
             do {
-                opcion = validar_numero_entre("1 Matriz ingresada por teclado.\n"
-                        "2 Matriz ingresada por el archivo \"matrizAumentada.txt\"\n"
+                opcion = validar_numero_entre("1 Matriz aumentada ingresada por teclado.\n"
+                        "2 Matriz aumentada ingresada por el archivo \"matrizAumentada.txt\"\n"
                         "0 salir\n", 0, 2);
                 switch (opcion) {
                     case 1:
-                        puts("La matriz aumentada dada por el usuario.");
+                        puts("Matriz aumentada dada por el usuario.");
                         tamanioMatriz(matriz);
                         resultado(matriz);
                         break;
                     case 2:
-                        puts("La matriz aumentada tomada del archivo.");
+                        puts("Matriz aumentada tomada del archivo.");
                         leerArchivo(matriz);
                         resultado(matriz);
                         break;
@@ -63,12 +63,12 @@ int main(int argc, char** argv) {
         case 2:
             switch (*argv[1]) {
                 case '1':
-                    puts("La matriz aumentada dada por el usuario.");
+                    puts("Matriz aumentada dada por el usuario.");
                     tamanioMatriz(matriz);
                     resultado(matriz);
                     break;
                 case '2':
-                    puts("La matriz aumentada tomada del archivo.");
+                    puts("Matriz aumentada tomada del archivo.");
                     leerArchivo(matriz);
                     resultado(matriz);
                     break;
@@ -109,7 +109,7 @@ void resultado(double matriz[FILA][COLUMNA]) {
     double x[FILA];
     int opcion;
     system("clear");
-
+    puts("Matriz aumentada");
     mostrarMatriz(matriz, numeroDeEcuaciones);
     ordenarMatrizDiagonal(matriz, numeroDeEcuaciones);
     mostrarMatriz(matriz, numeroDeEcuaciones);
@@ -169,7 +169,6 @@ void tamanioMatriz(double matriz[FILA][COLUMNA]) {
     int i, j;
     printf("Numero de ecuaciones:");
     scanf("%d", &numeroDeEcuaciones);
-    printf("\n");
     
     if (numeroDeEcuaciones > MAX_EQUACIONES)
         numeroDeEcuaciones = MAX_EQUACIONES;
@@ -177,12 +176,12 @@ void tamanioMatriz(double matriz[FILA][COLUMNA]) {
         numeroDeEcuaciones = MIN_EQUACIONES;
 
     for (i = 0; i < numeroDeEcuaciones; i++) {
-        printf("ECUACION %d\n", i + 1);
+        printf("\nECUACION %d\n", i + 1);
         for (j = 0; j < numeroDeEcuaciones; j++) {
-            printf("\nCoeficiente %d: ", j + 1);
+            printf("Coeficiente %d: ", j + 1);
             scanf("%lf", &matriz[i][j]);
         }
-        printf("\nTermino Independiente %d: ", j + 1);
+        printf("Termino Independiente %d: ", j + 1);
         scanf("%lf", &matriz[i][j]);
     }
 }
@@ -191,8 +190,11 @@ void leerArchivo(double matriz[FILA][COLUMNA]) {
     FILE* f;
     int i, j;
     double num;
+    
     f = fopen("matrizAumentada.txt", "r");
+    
     fscanf(f, "%d", &numeroDeEcuaciones);
+    
     for (i = 0; i < numeroDeEcuaciones; i++) {
         for (j = 0; j < numeroDeEcuaciones + 1; j++) {
             fscanf(f, "%lf", &num);
@@ -231,13 +233,11 @@ void eliminacionGaussSimple(double matriz[FILA][COLUMNA], double x[FILA], int nu
     for (i = 0; i < numeroDeEcuaciones; i++) {
         factor = matriz[i][i];
         for (j = i; j < numeroDeEcuaciones + 1; j++) {
-            if (factor != 1)
-                matriz[i][j] = matriz[i][j] / factor;
+            matriz[i][j] /= (factor != 1) ? factor : 1;
         }
-        if (i + 1 < numeroDeEcuaciones)
-            k = i + 1;
-        else
-            k = numeroDeEcuaciones;
+
+        k = (i + 1 < numeroDeEcuaciones) ? i + 1 : numeroDeEcuaciones;
+        
         for (m = k; m < numeroDeEcuaciones; m++) {
             primeraColumna = matriz[m][i];
             for (n = 0; n < numeroDeEcuaciones + 1; n++)
@@ -248,10 +248,7 @@ void eliminacionGaussSimple(double matriz[FILA][COLUMNA], double x[FILA], int nu
 
     for (i = numeroDeEcuaciones; i >= 0; i--) {
         for (j = i - 1; j >= 0; j--) {
-            if (i == numeroDeEcuaciones)
-                x[j] = matriz[j][i];
-            else
-                x[j] -= matriz[j][i] * x[i];
+            x[j] = (i == numeroDeEcuaciones) ? matriz[j][i] : x[j] - matriz[j][i] * x[i];
         }
     }
 }
@@ -269,12 +266,8 @@ void eliminacionGaussDirecto(double matriz[FILA][COLUMNA], double x[FILA], int n
 
     for (i = numeroDeEcuaciones; i >= 0; i--) {
         for (j = 0; j < i; j++) {
-            if (i == numeroDeEcuaciones)
-                x[j] = matriz[j][i];
-            else
-                x[j] -= matriz[j][i] * x[i];
-            if (j == i - 1)
-                x[j] /= matriz[j][j];
+            x[j] = (i == numeroDeEcuaciones) ? matriz[j][i] : x[j] - matriz[j][i] * x[i];
+            x[j] /= (j == i - 1) ? matriz[j][j] : 1;
         }
     }
 }

@@ -98,9 +98,8 @@ int validar_numero_entre(char texto[], int num_min, int num_max) {
             error("ingrese un número valida.");
             printf("Ingrese un opción: ");
             scanf("%d", &num);
-        } else {
+        } else
             encontro++;
-        }
     } while (encontro != 1);
     system("clear");
     return num;
@@ -139,11 +138,9 @@ void resultado(double matriz[FILA][COLUMNA]) {
 }
 
 void ordenarMatrizDiagonal(double matriz[FILA][COLUMNA], int numeroDeEcuaciones) {
-    int i, j, k, l;
-    int esCero = 0;
+    int i, j, k;
     double aux[FILA] = {0};
     do {
-        esCero = 0;
         for (i = 0; i < numeroDeEcuaciones; i++) {
             for (j = 0; j < numeroDeEcuaciones; j++) {
                 if (matriz[i][i] == 0) {
@@ -162,9 +159,8 @@ bool diagonalPrincipalNoEsCero(double matriz[FILA][COLUMNA], int numeroDeEcuacio
     int i;
     bool esCero = false;
     for (i = 0; i < numeroDeEcuaciones; i++) {
-        if (matriz[i][i] == 0) {
+        if (matriz[i][i] == 0)
             esCero = true;
-        }
     }
     return esCero;
 }
@@ -174,12 +170,11 @@ void tamanioMatriz(double matriz[FILA][COLUMNA]) {
     printf("Numero de ecuaciones:");
     scanf("%d", &numeroDeEcuaciones);
     printf("\n");
-    if (numeroDeEcuaciones > MAX_EQUACIONES) {
+    
+    if (numeroDeEcuaciones > MAX_EQUACIONES)
         numeroDeEcuaciones = MAX_EQUACIONES;
-
-    } else if (numeroDeEcuaciones < MIN_EQUACIONES) {
+    else if (numeroDeEcuaciones < MIN_EQUACIONES)
         numeroDeEcuaciones = MIN_EQUACIONES;
-    }
 
     for (i = 0; i < numeroDeEcuaciones; i++) {
         printf("ECUACION %d\n", i + 1);
@@ -211,9 +206,8 @@ void mostrarFila(double x[FILA], int numeroDeEcuaciones) {
     int i;
     puts("");
     printf("|");
-    for (i = 0; i < numeroDeEcuaciones; i++) {
+    for (i = 0; i < numeroDeEcuaciones; i++)
         printf(" %10.6lf |", x[i]);
-    }
     puts("\n");
 }
 
@@ -222,9 +216,8 @@ void mostrarMatriz(double matriz[FILA][COLUMNA], int numeroDeEcuaciones) {
     puts("");
     for (i = 0; i < numeroDeEcuaciones; i++) {
         printf("|");
-        for (j = 0; j < numeroDeEcuaciones + 1; j++) {
+        for (j = 0; j < numeroDeEcuaciones + 1; j++)
             printf(" %10.6lf |", matriz[i][j]);
-        }
         puts("");
     }
     puts("");
@@ -238,31 +231,27 @@ void eliminacionGaussSimple(double matriz[FILA][COLUMNA], double x[FILA], int nu
     for (i = 0; i < numeroDeEcuaciones; i++) {
         factor = matriz[i][i];
         for (j = i; j < numeroDeEcuaciones + 1; j++) {
-            if (factor != 1) {
+            if (factor != 1)
                 matriz[i][j] = matriz[i][j] / factor;
-            }
         }
-        if (i + 1 < numeroDeEcuaciones) {
+        if (i + 1 < numeroDeEcuaciones)
             k = i + 1;
-        } else {
+        else
             k = numeroDeEcuaciones;
-        }
         for (m = k; m < numeroDeEcuaciones; m++) {
             primeraColumna = matriz[m][i];
-            for (n = 0; n < numeroDeEcuaciones + 1; n++) {
+            for (n = 0; n < numeroDeEcuaciones + 1; n++)
                 matriz[m][n] = matriz[m][n] - (primeraColumna * matriz[i][n]);
-            }
         }
     }
 
 
     for (i = numeroDeEcuaciones; i >= 0; i--) {
         for (j = i - 1; j >= 0; j--) {
-            if (i == numeroDeEcuaciones) {
+            if (i == numeroDeEcuaciones)
                 x[j] = matriz[j][i];
-            } else {
+            else
                 x[j] -= matriz[j][i] * x[i];
-            }
         }
     }
 }
@@ -273,22 +262,19 @@ void eliminacionGaussDirecto(double matriz[FILA][COLUMNA], double x[FILA], int n
     for (i = 0; i < numeroDeEcuaciones; i++) {
         for (j = i + 1; j < numeroDeEcuaciones; j++) {
             primeraColumna = matriz[j][i];
-            for (k = 0; k < numeroDeEcuaciones + 1; k++) {
+            for (k = 0; k < numeroDeEcuaciones + 1; k++)
                 matriz[j][k] = matriz[j][k] - (matriz[i][k] / matriz[i][i]) * primeraColumna;
-            }
         }
     }
 
     for (i = numeroDeEcuaciones; i >= 0; i--) {
         for (j = 0; j < i; j++) {
-            if (i == numeroDeEcuaciones) {
+            if (i == numeroDeEcuaciones)
                 x[j] = matriz[j][i];
-            } else {
+            else
                 x[j] -= matriz[j][i] * x[i];
-            }
-            if (j == i - 1) {
+            if (j == i - 1)
                 x[j] /= matriz[j][j];
-            }
         }
     }
 }

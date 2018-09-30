@@ -58,10 +58,11 @@ int main(int argc, char** argv) {
                         resultado(matriz);
                         break;
                 }
+                pausa();
             } while (opcion != 0);
             break;
         case 2:
-            switch (*argv[1]) {
+            switch (*argv[argc - 1]) {
                 case '1':
                     puts("Matriz aumentada dada por el usuario.");
                     tamanioMatriz(matriz);
@@ -134,7 +135,6 @@ void resultado(double matriz[FILA][COLUMNA]) {
             mostrarFila(x, numeroDeEcuaciones);
             break;
     }
-    pausa();
 }
 
 void ordenarMatrizDiagonal(double matriz[FILA][COLUMNA], int numeroDeEcuaciones) {
